@@ -1,21 +1,112 @@
-/* You're welcome to change any of this! */
+/* 
+VALUES:
+- Performance
+- Quality
+- Simplicity
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro:wght@200&display=swap');
+
 * {
     box-sizing: border-box;
 }
 
 body {
-    margin: 0px;
+    margin: 0;
+    background: linear-gradient(to right, #000, #222);
+    color: #FFF;
     font-family: Arial, sans-serif;
 }
-header, section {
-    padding: 20px;
-}
-p, li {
-    line-height: 1.5em;
+
+main{
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-rows: .25fr 1fr 1fr;
+    grid-template-areas: 
+        "a a d"
+        "b c d"
+        "e e d";
+    min-height: 100vh;
 }
 
-#inspiration {
-    background-color: #F0F0F0;
-    padding-top: 40px;
-    padding-bottom: 40px;
+#title{
+    grid-area: a;
+}
+
+#tutorials{
+    grid-area: b;
+}
+
+#homework{
+    grid-area: c;
+}
+
+#inspiration{
+    grid-area: e;
+}
+
+#picture{
+    grid-area: d;
+    background-image: url("images/dog.jpeg");
+    background-size: cover;
+    background-position: center;
+}
+
+h1, section {
+    font-family: 'Montserrat', sans-serif;
+    padding: 20px;
+}
+
+h1{
+    font-size: 50px;
+    height: 50px;
+}
+
+h2{
+    font-size: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+li {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
+    height: 18px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul > ul{
+    margin-left: 10px;
+}
+
+a{
+    color: #BFB;
+    text-decoration: none;
+}
+
+@media (max-width: 1100px) {
+    main{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    main{
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+            "a a"
+            "b c"
+            "e e";
+    }
+
+    #picture{
+        display: none;
+    }
 }
