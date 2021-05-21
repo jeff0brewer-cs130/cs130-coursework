@@ -1,0 +1,225 @@
+* {
+    box-sizing: border-box;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background-color: black;
+    overflow: hidden;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 250px auto;
+    grid-template-rows: auto 150px;
+    grid-template-areas: 
+    "a b"
+    "a c";
+}
+
+.sidebar{
+    grid-area: a;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+    border-color: white;
+}
+
+.sidebar > div{
+    width: 100%;
+    height: 70px;
+    background-color: black;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar > nav{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar input{
+    width: 50%;
+    height: 20px;
+    margin: 10px;
+    font-size: 15px;
+    background-color: black;
+    border-style: solid;
+    border-color: white;
+    border-width: 0 0 1px 0;
+}
+
+.sidebar button{
+    background-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    padding: 5px;
+}
+
+.sidebar > section{
+    width: 100%;
+    max-height: calc(100vh - 350px);
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.sidebar > section > div{
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    position: relative;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+}
+
+.inventory{
+    grid-area: b;
+    overflow-y: scroll;
+}
+
+.inventory > div{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2.5fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "a m d"
+    "b m e"
+    "c m f"
+    ". m g"
+    ". m h";
+}
+
+.inventory section{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.inventory section > div{
+    width: 30%;
+    padding-bottom: 30%;
+    position: relative;
+    margin: 1.5%;
+    background-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+}
+
+.equipped{
+    grid-area: m;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "a m d"
+    "b m e"
+    "c m f"
+    ". m g"
+    ". m h";
+}
+
+.equipped > section{
+    display: flex;
+    align-items: center;
+}
+
+.equipped > section > div{
+    width: 50%;
+    height: 0;
+    padding-bottom: 50%;
+    position: relative;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+}
+
+.loadouts{
+    grid-area: c;
+    border-style: solid;
+    border-width: 1px 0 0 0;
+    border-color: white;
+    overflow-x: scroll;
+}
+
+.loadouts > nav{
+    width: fit-content;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.loadouts section{
+    width: 150px;
+    height: 125px;
+    margin: 12.5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kinetic{
+    grid-area: a;
+    justify-content: flex-start;
+}
+
+.energy{
+    grid-area: b;
+    justify-content: flex-start;
+}
+
+.heavy{
+    grid-area: c;
+    justify-content: flex-start;
+}
+
+.head{
+    grid-area: d;
+    justify-content: flex-end;
+}
+
+.arms{
+    grid-area: e;
+    justify-content: flex-end;
+}
+
+.chest{
+    grid-area: f;
+    justify-content: flex-end;
+}
+
+.legs{
+    grid-area: g;
+    justify-content: flex-end;
+}
+
+.classitem{
+    grid-area: h;
+    justify-content: flex-end;
+}
+
+@media (max-width: 1000px){
+    .inventory > div{
+        grid-template-columns: 1fr 1.5fr 1fr;
+    }
+    .equipped{
+        grid-template-columns: 1fr 0fr 1fr;
+    }
+}
