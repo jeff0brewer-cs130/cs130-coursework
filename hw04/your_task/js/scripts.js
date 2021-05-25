@@ -25,7 +25,7 @@ const getTracks = (term) => {
                 let s = "";
                 for(let i = 0; i < num_tracks; i++){
                     s += `
-                    <section class="track-item preview" data-preview-track="${data[i].preview_url}">
+                    <section class="track-item preview" data-preview-track="${data[i].preview_url}" data-image-url="${data[i].album.image_url}" data-song-name="${data[i].name}" data-artist-name="${data[i].artist.name}">
                         <img src="${data[i].album.image_url}">
                         <i class="fas play-track fa-play" aria-hidden="true"></i>
                         <div class="label">
@@ -41,6 +41,11 @@ const getTracks = (term) => {
             else{
                 document.getElementById('tracks').innerHTML = "no tracks found"
             }
+        })
+        .then(() => {
+            document.getElementById('tracks').querySelectorAll('section').forEach(track => {
+                track.onclick = setCurrTrack;
+            });
         });
 };
 
@@ -95,6 +100,32 @@ const getArtist = (term) => {
                 document.getElementById('artist').innerHTML = "no artists found";
             }
         });
+};
+
+const setCurrTrack = ev => {
+    let section = ev.target;
+    while(section.nodeName != "SECTION"){
+        section = section.parentElement;
+    }
+    const track = {
+        preview_url: section.dataset.previewTrack,
+        image_url: section.dataset.imageUrl,
+        song_name: section.dataset.songName,
+        artist_name: section.dataset.artistName
+    };
+    document.getElementById('track-item').innerHTML = `
+        <div class="track-item" data-preview-track="${track.preview_url}">
+            <img src="${track.image_url}">
+            <i class="fas play-track fa-pause" aria-hidden="true"></i>
+            <div class="label">
+                <h3>${track.song_name}</h3>
+                <p>
+                    ${track.artist_name}
+                </p>
+            </div>
+        </div>`;
+    audioPlayer.setAudioFile(track.preview_url);
+    audioPlayer.play();
 };
 
 
