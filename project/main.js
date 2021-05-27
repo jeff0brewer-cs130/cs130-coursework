@@ -4,7 +4,7 @@ const baseURL = 'http://localhost:8081';
 const imageURL = 'http://bungie.net';
 
 const bungieEnum = {
-    classType: ["Titan", "Hunter", "Warlock"];
+    classType: ["Titan", "Hunter", "Warlock"]
 }
 
 const init = async () => {
