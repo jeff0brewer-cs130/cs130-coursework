@@ -16,12 +16,12 @@ const init = async () => {
         char_info = char_info.characters.data;
         console.log(char_info);
         char_elem = document.querySelectorAll('.character');
-        for(let i = 0; i < char_info.length; i++){
+        for(let i = 0; i < 3; i++){
             let curr_id = Object.keys(char_info)[i];
             user.char_ids.push(curr_id);
             char_elem[i].style.backgroundImage = `url(${imageURL + char_info[curr_id].emblemBackgroundPath})`;
+            console.log(char_elem[i].style.backgroundImage);
         }
-
     }
     else{
         console.log('login failed');
