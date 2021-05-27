@@ -10,7 +10,7 @@ const OAuth = {
     }
 }
 
-fetch(`https://www.bungie.net/Platform/App/OAuth/Token?grant_type=authorization_code&code=${auth_code}`, { 
+fetch(`https://www.bungie.net/Platform/App/OAuth/Token/`, { 
         method: 'POST',
         headers: {
             "Authorization": `Basic ${btoa(`${OAuth.client_id}:${OAuth.client_secret}`)}`,
