@@ -4,7 +4,7 @@ const baseURL = 'http://localhost:8081';
 const imageURL = 'http://bungie.net';
 
 let user = {
-    char_ids = []
+    char_ids: []
 };
 
 const init = async () => {
