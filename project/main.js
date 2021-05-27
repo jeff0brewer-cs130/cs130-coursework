@@ -8,7 +8,8 @@ const init = async () => {
     if(authorize.ok){
         console.log('login success');
         let char_info = await fetch(`${baseURL}/getProfile/Characters`);
-        console.log(char_info.body);
+        char_info = await char_info.json();
+        console.log(char_info);
     }
     else{
         console.log('login failed');
