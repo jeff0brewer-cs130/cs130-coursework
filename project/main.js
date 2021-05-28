@@ -17,17 +17,6 @@ const bungieEnum = {
     }
 };
 
-let inv_index = {
-    kinetic: 0,
-    energy: 0,
-    power: 0,
-    head: 0,
-    arms: 0,
-    chest: 0,
-    legs: 0,
-    classitem: 0
-};
-
 const init = async () => {
     let authorize = await fetch(`${baseURL}/authorize/${auth_code}`);
     if(authorize.ok){
@@ -51,19 +40,38 @@ const init = async () => {
 };
 init();
 
+const set_item_elem = async (item, elem) => {
+    let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`);
+    item_info = await item_info.json();
+    elem.setAttribute('data-instance_id', item.itemInstanceId);
+    elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
+};
+
 const get_char_inventory = async (ev) => {
     let char_inventory = await fetch(`${baseURL}/getProfile/CharacterInventories,ItemInstances`);
     char_inventory = await char_inventory.json();
     char_inventory = char_inventory.characterInventories.data[ev.target.dataset.char_id].items;
-    char_inventory.forEach(async (item) => {
+    let inv_index = {
+        kinetic: 0,
+        energy: 0,
+        power: 0,
+        head: 0,
+        arms: 0,
+        chest: 0,
+        legs: 0,
+        classitem: 0
+    };
+    char_inventory.forEach(item => {
         switch(item.bucketHash){
             case bungieEnum.bucket.kinetic:
                 let elem = document.querySelectorAll('.kinetic')[1].querySelectorAll('div')[inv_index.kinetic];
                 inv_index.kinetic++;
-                let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`);
-                item_info = await item_info.json();
-                console.log(item_info);
-                elem.style.backgroundImage = `url(${imageURL + item_info.displayProperties.icon})`;
+                set_item_elem(item, elem);
+                break;
+            case bungieEnum.bucket.energy:
+                let elem = document.querySelectorAll('.energy')[1].querySelectorAll('div')[inv_index.energy];
+                inv_index.energy++;
+                set_item_elem(item, elem);
                 break;
         }
     });
