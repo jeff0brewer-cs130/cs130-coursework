@@ -69,7 +69,7 @@ const get_char_inventory = async (ev) => {
                 set_item_elem(item, elem);
                 break;
             case bungieEnum.bucket.energy:
-                let elem = document.querySelectorAll('.energy')[1].querySelectorAll('div')[inv_index.energy];
+                elem = document.querySelectorAll('.energy')[1].querySelectorAll('div')[inv_index.energy];
                 inv_index.energy++;
                 set_item_elem(item, elem);
                 break;
