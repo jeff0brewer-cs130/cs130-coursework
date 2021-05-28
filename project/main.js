@@ -17,11 +17,19 @@ const bungieEnum = {
     }
 };
 
+let fetch_options = {};
+
 const init = async () => {
     let authorize = await fetch(`${baseURL}/authorize/${auth_code}`);
     if(authorize.ok){
+        authorize = await authorize.json();
+        fetch_options = {
+            headers:{
+                Authorization: 'Bearer ' + authorize.body.access_token
+            }
+        }
         console.log('login success');
-        let char_info = await fetch(`${baseURL}/getProfile/Characters`);
+        let char_info = await fetch(`${baseURL}/getProfile/Characters`, fetch_options);
         char_info = await char_info.json();
         char_info = char_info.characters.data;
         char_elem = document.querySelectorAll('.character');
@@ -54,14 +62,14 @@ const get_char_items = ev => {
 };
 
 const set_item_elem = async (item, elem) => {
-    let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`);
+    let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
     item_info = await item_info.json();
     elem.setAttribute('data-instance_id', item.itemInstanceId);
     elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
 };
 
 const get_char_equipped = async (ev) => {
-    let char_equipped = await fetch(`${baseURL}/getProfile/CharacterEquipment`);
+    let char_equipped = await fetch(`${baseURL}/getProfile/CharacterEquipment`, fetch_options);
     char_equipped = await char_equipped.json();
     char_equipped = char_equipped.characterEquipment.data[ev.target.dataset.char_id].items;
     let elem = null;
@@ -96,7 +104,7 @@ const get_char_equipped = async (ev) => {
 };
 
 const get_char_inventory = async (ev) => {
-    let char_inventory = await fetch(`${baseURL}/getProfile/CharacterInventories`);
+    let char_inventory = await fetch(`${baseURL}/getProfile/CharacterInventories`, fetch_options);
     char_inventory = await char_inventory.json();
     char_inventory = char_inventory.characterInventories.data[ev.target.dataset.char_id].items;
     let inv_index = {

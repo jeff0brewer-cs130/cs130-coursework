@@ -31,18 +31,17 @@ router.route("/authorize/:auth_code")
                 }
             })
             .then(response => {
-                OAuth.access_token = response.data.access_token;
+                let token = response.data.access_token;
                 axios.get(`${bungieURL}/User/GetMembershipsForCurrentUser/`, {
                         headers: {
-                            Authorization: 'Bearer ' + OAuth.access_token
+                            Authorization: 'Bearer ' + token
                         }
                     })
                     .then(response => {
                         const destiny_info = response.data.Response.destinyMemberships[0];
-                        user.username = destiny_info.displayName;
                         user.member_id = destiny_info.membershipId;
                         user.member_type = destiny_info.membershipType;
-                        res.status(200).send();
+                        res.status(200).send({access_token: token});
                     })
                     .catch(err => {
                         console.log(err);
@@ -61,7 +60,7 @@ router.route("/getProfile/:components")
 
         axios.get(`${bungieURL}/Destiny2/${user.member_type}/Profile/${user.member_id}?components=${req.params.components}`, {
                 headers: {
-                    Authorization: 'Bearer ' + OAuth.access_token
+                    Authorization: req.header('Authorization')
                 }
             })
             .then(response => {
@@ -79,7 +78,7 @@ router.route("/itemlookup/:hash")
 
         axios.get(`${bungieURL}/Destiny2/Manifest/DestinyInventoryItemDefinition/${req.params.hash}/`,  {
                 headers: {
-                    Authorization: 'Bearer ' + OAuth.access_token
+                    Authorization: req.header('Authorization')
                 }
             })
             .then(response => {
