@@ -54,9 +54,8 @@ init();
 const get_char_inventory = async (ev) => {
     let char_inventory = await fetch(`${baseURL}/getProfile/CharacterInventories,ItemInstances`);
     char_inventory = await char_inventory.json();
-    console.log(char_inventory);
     char_inventory = char_inventory.characterInventories.data[ev.target.dataset.char_id].items;
-    char_inventory.forEach(item => {
+    char_inventory.forEach(async (item) => {
         switch(item.bucketHash){
             case bungieEnum.bucket.kinetic:
                 let elem = document.querySelectorAll('.kinetic')[1].querySelectorAll('div')[inv_index.kinetic];
