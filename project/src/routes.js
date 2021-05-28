@@ -11,8 +11,6 @@ let OAuth = {
     client_secret: 'wtb8SXXP-uTQY3xLDhQw3vML-6hjxd881X3sCiRQGYE'
 };
 
-let user = {};
-
 const encodebase64 = str => {
     let buff = Buffer.from(str);
     return buff.toString('base64');
@@ -39,9 +37,11 @@ router.route("/authorize/:auth_code")
                     })
                     .then(response => {
                         const destiny_info = response.data.Response.destinyMemberships[0];
-                        user.member_id = destiny_info.membershipId;
-                        user.member_type = destiny_info.membershipType;
-                        res.status(200).send(JSON.stringify({access_token: token}));
+                        res.status(200).send(JSON.stringify({
+                            access_token: token,
+                            member_type: destiny_info.membershipType,
+                            member_id: destiny_info.membershipId
+                        }));
                     })
                     .catch(err => {
                         console.log(err);
@@ -54,11 +54,11 @@ router.route("/authorize/:auth_code")
             });
     });
 
-router.route("/getProfile/:components")
+router.route("/getProfile/:member_type/:member_id/:components")
     .get((req, res) => {
-        console.log(`GET /getProfile/${req.params.components}`);
+        console.log(`GET /getProfile/${req.params.member_type}/${req.params.member_id}/${req.params.components}`);
 
-        axios.get(`${bungieURL}/Destiny2/${user.member_type}/Profile/${user.member_id}?components=${req.params.components}`, {
+        axios.get(`${bungieURL}/Destiny2/${req.params.member_type}/Profile/${req.params.member_id}?components=${req.params.components}`, {
                 headers: {
                     Authorization: req.header('Authorization')
                 }

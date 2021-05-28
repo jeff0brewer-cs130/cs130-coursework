@@ -18,11 +18,14 @@ const bungieEnum = {
 };
 
 let fetch_options = {};
+let user = {};
 
 const init = async () => {
     let authorize = await fetch(`${baseURL}/authorize/${auth_code}`);
     if(authorize.ok){
         authorize = await authorize.json();
+        user.member_type = authorize.member_type;
+        user.member_id = authorize.member_id;
         fetch_options = {
             headers:{
                 Authorization: 'Bearer ' + authorize.access_token
@@ -69,7 +72,7 @@ const set_item_elem = async (item, elem) => {
 };
 
 const get_char_equipped = async (ev) => {
-    let char_equipped = await fetch(`${baseURL}/getProfile/CharacterEquipment`, fetch_options);
+    let char_equipped = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/CharacterEquipment`, fetch_options);
     char_equipped = await char_equipped.json();
     char_equipped = char_equipped.characterEquipment.data[ev.target.dataset.char_id].items;
     let elem = null;
