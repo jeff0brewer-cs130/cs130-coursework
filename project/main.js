@@ -26,7 +26,7 @@ const init = async () => {
         console.log(authorize);
         fetch_options = {
             headers:{
-                Authorization: 'Bearer ' + authorize.body.access_token
+                Authorization: 'Bearer ' + authorize.access_token
             }
         }
         console.log('login success');
