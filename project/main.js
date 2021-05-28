@@ -1,5 +1,3 @@
-const { set } = require(".");
-
 const url_search = new URLSearchParams(window.location.search);
 const auth_code = url_search.get('code');
 const baseURL = 'http://localhost:8081';
