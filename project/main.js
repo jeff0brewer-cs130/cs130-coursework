@@ -13,7 +13,7 @@ const bungieEnum = {
         arms: 3551918588,
         chest: 14239492,
         legs: 20886954,
-        classitem: 158578786
+        classitem: 1585787867
     }
 };
 
