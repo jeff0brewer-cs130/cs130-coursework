@@ -61,10 +61,11 @@ const get_char_inventory = async (ev) => {
         legs: 0,
         classitem: 0
     };
+    let elem = null;
     char_inventory.forEach(item => {
         switch(item.bucketHash){
             case bungieEnum.bucket.kinetic:
-                let elem = document.querySelectorAll('.kinetic')[1].querySelectorAll('div')[inv_index.kinetic];
+                elem = document.querySelectorAll('.kinetic')[1].querySelectorAll('div')[inv_index.kinetic];
                 inv_index.kinetic++;
                 set_item_elem(item, elem);
                 break;
