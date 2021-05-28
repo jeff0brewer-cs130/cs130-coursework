@@ -1,3 +1,7 @@
+:root{
+    --inv_size: 15vw;
+}
+
 * {
     box-sizing: border-box;
     color: white;
@@ -107,11 +111,19 @@ body{
     ". m h";
 }
 
-.inventory section{
-    padding: 20px;
+.inv{
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row-reverse;
+    justify-content: center;
+    align-items: center;
+}
+
+.inv > section{
+    width: var(--inv_size);
+    height: var(--inv_size);
+    margin: auto;
 }
 
 .inventory section > div{
@@ -146,13 +158,18 @@ body{
 }
 
 .equipped > section > div{
-    width: 50%;
+    width: var(--inv_size);
     height: 0;
-    padding-bottom: 50%;
+    padding-bottom: var(--inv_size);
     position: relative;
     border-style: solid;
     border-width: 1px;
     border-color: white;
+}
+.inventory section{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .loadouts{

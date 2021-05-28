@@ -46,7 +46,7 @@ const init = async () => {
     }
     else{
         console.log('login failed');
-        // window.location.href = "./login.html";
+        window.location.href = "./login.html";
     }
 };
 init();
