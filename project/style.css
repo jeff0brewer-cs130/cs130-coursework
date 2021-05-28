@@ -1,5 +1,6 @@
 :root{
     --inv_size: 15vw;
+    --eqp_size: 10vw;
 }
 
 * {
@@ -158,9 +159,9 @@ body{
 }
 
 .equipped > section > div{
-    width: var(--inv_size);
+    width: var(--eqp_size);
     height: 0;
-    padding-bottom: var(--inv_size);
+    padding-bottom: var(--eqp_size);
     position: relative;
     border-style: solid;
     border-width: 1px;
