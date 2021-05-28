@@ -6,11 +6,6 @@ const router = express.Router();
 
 axios.defaults.headers.common['X-API-Key'] = process.env.BUNGIE_API_KEY;
 
-let OAuth = {
-    client_id: '36633',
-    client_secret: 'wtb8SXXP-uTQY3xLDhQw3vML-6hjxd881X3sCiRQGYE'
-};
-
 const encodebase64 = str => {
     let buff = Buffer.from(str);
     return buff.toString('base64');
@@ -24,7 +19,7 @@ router.route("/authorize/:auth_code")
         axios.post(`${bungieURL}/App/OAuth/Token/`, `grant_type=authorization_code&code=${req.params.auth_code}`,
             {
                 headers: {
-                    "Authorization": `Basic ${encodebase64(`${OAuth.client_id}:${OAuth.client_secret}`)}`,
+                    "Authorization": `Basic ${encodebase64(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`)}`,
                     "Content-Type": "application/x-www-form-urlencoded"
                 }
             })
