@@ -32,7 +32,7 @@ const init = async () => {
             }
         }
         console.log('login success');
-        let char_info = await fetch(`${baseURL}/getProfile/Characters`, fetch_options);
+        let char_info = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/Characters`, fetch_options);
         char_info = await char_info.json();
         char_info = char_info.characters.data;
         char_elem = document.querySelectorAll('.character');
