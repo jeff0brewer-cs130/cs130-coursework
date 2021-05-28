@@ -1,3 +1,5 @@
+const { set } = require(".");
+
 const url_search = new URLSearchParams(window.location.search);
 const auth_code = url_search.get('code');
 const baseURL = 'http://localhost:8081';
@@ -30,7 +32,7 @@ const init = async () => {
             char_elem[i].setAttribute('data-char_id', curr_id);
             char_elem[i].style.backgroundImage = `url(${imageURL + char_info[curr_id].emblemBackgroundPath})`;
             char_elem[i].innerHTML = bungieEnum.classType[char_info[curr_id].classType];
-            char_elem[i].onclick = get_char_inventory;
+            char_elem[i].onclick = get_char_items;
         }
     }
     else{
@@ -47,6 +49,12 @@ const reset_inventory = () => {
     })
 };
 
+const get_char_items = ev => {
+    reset_inventory();
+    get_char_inventory(ev);
+    get_char_equipped(ev);
+};
+
 const set_item_elem = async (item, elem) => {
     let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`);
     item_info = await item_info.json();
@@ -54,9 +62,43 @@ const set_item_elem = async (item, elem) => {
     elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
 };
 
+const get_char_equipped = async (ev) => {
+    let char_equipped = await fetch(`${baseURL}/getProfile/CharacterEquipment`);
+    char_equipped = await char_equipped.json();
+    char_equipped = char_equipped.characterEquipment.data[ev.target.dataset.char_id].items;
+    let elem = null;
+    char_equipped.forEach(item => {
+        switch(item.bucketHash){
+            case bungieEnum.bucket.kinetic:
+                set_item_elem(item, document.querySelector('.kinetic div'));
+                break;
+            case bungieEnum.bucket.energy:
+                set_item_elem(item, document.querySelector('.energy div'));
+                break;
+            case bungieEnum.bucket.power:
+                set_item_elem(item, document.querySelector('.power div'));
+                break;
+            case bungieEnum.bucket.head:
+                set_item_elem(item, document.querySelector('.head div'));
+                break;
+            case bungieEnum.bucket.arms:
+                set_item_elem(item, document.querySelector('.arms div'));
+                break;
+            case bungieEnum.bucket.chest:
+                set_item_elem(item, document.querySelector('.chest div'));
+                break;
+            case bungieEnum.bucket.legs:
+                set_item_elem(item, document.querySelector('.legs div'));
+                break;
+            case bungieEnum.bucket.classitem:
+                set_item_elem(item, document.querySelector('.classitem div'));
+                break;
+    }
+    });
+};
+
 const get_char_inventory = async (ev) => {
-    reset_inventory();
-    let char_inventory = await fetch(`${baseURL}/getProfile/CharacterInventories,ItemInstances`);
+    let char_inventory = await fetch(`${baseURL}/getProfile/CharacterInventories`);
     char_inventory = await char_inventory.json();
     char_inventory = char_inventory.characterInventories.data[ev.target.dataset.char_id].items;
     let inv_index = {
@@ -108,12 +150,10 @@ const get_char_inventory = async (ev) => {
                 set_item_elem(item, elem);
                 break;
             case bungieEnum.bucket.classitem:
-                console.log(item);
                 elem = document.querySelectorAll('.classitem')[1].querySelectorAll('div')[inv_index.classitem];
                 inv_index.classitem++;
                 set_item_elem(item, elem);
                 break;
         }
     });
-    console.log(char_inventory);
 };
