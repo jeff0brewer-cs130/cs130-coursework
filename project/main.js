@@ -108,10 +108,12 @@ const get_char_inventory = async (ev) => {
                 set_item_elem(item, elem);
                 break;
             case bungieEnum.bucket.classitem:
+                console.log(item);
                 elem = document.querySelectorAll('.classitem')[1].querySelectorAll('div')[inv_index.classitem];
                 inv_index.classitem++;
                 set_item_elem(item, elem);
                 break;
         }
     });
+    console.log(char_inventory);
 };
