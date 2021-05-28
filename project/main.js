@@ -107,7 +107,7 @@ const get_char_equipped = async (ev) => {
 };
 
 const get_char_inventory = async (ev) => {
-    let char_inventory = await fetch(`${baseURL}/getProfile/CharacterInventories`, fetch_options);
+    let char_inventory = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/CharacterInventories`, fetch_options);
     char_inventory = await char_inventory.json();
     char_inventory = char_inventory.characterInventories.data[ev.target.dataset.char_id].items;
     let inv_index = {
