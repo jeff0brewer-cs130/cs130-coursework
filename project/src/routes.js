@@ -41,7 +41,7 @@ router.route("/authorize/:auth_code")
                         const destiny_info = response.data.Response.destinyMemberships[0];
                         user.member_id = destiny_info.membershipId;
                         user.member_type = destiny_info.membershipType;
-                        res.status(200).send({access_token: token});
+                        res.status(200).send(JSON.stringify({access_token: token}));
                     })
                     .catch(err => {
                         console.log(err);
