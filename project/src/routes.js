@@ -39,7 +39,6 @@ router.route("/authorize/:auth_code")
                     })
                     .then(response => {
                         const destiny_info = response.data.Response.destinyMemberships[0];
-                        console.log(destiny_info);
                         user.username = destiny_info.displayName;
                         user.member_id = destiny_info.membershipId;
                         user.member_type = destiny_info.membershipType;
@@ -71,8 +70,26 @@ router.route("/getProfile/:components")
             .catch(err => {
                 console.log(err);
                 res.status(500).send();
+            });
+    });
+
+router.route("/itemlookup/:hash")
+    .get((req, res) => {
+        console.log(`GET /itemlookup/${req.params.hash}`);
+
+        axios.get(`${bungieURL}/Destiny2/Manifest/DestinyInventoryItemDefinition/${req.params.hash}/`,  {
+                headers: {
+                    Authorization: 'Bearer ' + OAuth.access_token
+                }
             })
-    })
+            .then(response => {
+                res.status(200).send(JSON.stringify(response.data.Response.displayProperties));
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send();
+            });
+    });
 
 
 

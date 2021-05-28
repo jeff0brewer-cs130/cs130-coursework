@@ -115,6 +115,8 @@ body{
 }
 
 .inventory section > div{
+    background-position: center;
+    background-size: cover;
     width: 30%;
     padding-bottom: 30%;
     position: relative;

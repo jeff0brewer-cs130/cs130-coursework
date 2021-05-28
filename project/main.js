@@ -56,12 +56,16 @@ const get_char_inventory = async (ev) => {
     char_inventory = await char_inventory.json();
     console.log(char_inventory);
     char_inventory = char_inventory.characterInventories.data[ev.target.dataset.char_id].items;
-    // char_inventory.forEach(item => {
-    //     switch(item.bucketHash){
-    //         case bungieEnum.bucket.kinetic:
-    //             document.querySelectorAll('.kinetic')[1].querySelectorAll('div');
-    //             break;
-    //     }
-    // });
+    char_inventory.forEach(item => {
+        switch(item.bucketHash){
+            case bungieEnum.bucket.kinetic:
+                let elem = document.querySelectorAll('.kinetic')[1].querySelectorAll('div')[inv_index.kinetic];
+                inv_index.kinetic++;
+                let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`);
+                item_info = await item_info.json();
+                elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
+                break;
+        }
+    });
     console.log(char_inventory);
 };
