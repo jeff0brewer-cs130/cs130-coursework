@@ -62,7 +62,8 @@ const get_char_inventory = async (ev) => {
                 inv_index.kinetic++;
                 let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`);
                 item_info = await item_info.json();
-                elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
+                console.log(item_info);
+                elem.style.backgroundImage = `url(${imageURL + item_info.displayProperties.icon})`;
                 break;
         }
     });

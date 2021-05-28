@@ -83,7 +83,7 @@ router.route("/itemlookup/:hash")
                 }
             })
             .then(response => {
-                res.status(200).send(JSON.stringify(response.data.Response.displayProperties));
+                res.status(200).send(JSON.stringify(response.data.Response));
             })
             .catch(err => {
                 console.log(err);
