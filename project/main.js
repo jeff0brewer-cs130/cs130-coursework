@@ -54,7 +54,7 @@ init();
 const reset_inventory = () => {
     document.querySelectorAll('.inventory div').forEach(elem => {
         elem.setAttribute('data-instance_id', -1);
-        elem.style.borderColor = '#999';
+        elem.style.borderColor = '#555';
         elem.style.backgroundImage = '';
     })
 };
