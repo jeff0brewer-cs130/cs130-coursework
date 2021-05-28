@@ -114,5 +114,4 @@ const get_char_inventory = async (ev) => {
                 break;
         }
     });
-    console.log(char_inventory);
 };
