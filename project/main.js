@@ -54,6 +54,7 @@ init();
 const reset_inventory = () => {
     document.querySelectorAll('.inventory div').forEach(elem => {
         elem.setAttribute('data-instance_id', -1);
+        elem.style.display = 'none';
         elem.style.backgroundImage = '';
     })
 };
@@ -68,6 +69,7 @@ const set_item_elem = async (item, elem) => {
     let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
     item_info = await item_info.json();
     elem.setAttribute('data-instance_id', item.itemInstanceId);
+    elem.style.display = 'block';
     elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
 };
 

@@ -94,7 +94,7 @@ body{
     overflow-y: scroll;
 }
 
-.inventory > div{
+.inventory > nav{
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 2.5fr 1fr;
