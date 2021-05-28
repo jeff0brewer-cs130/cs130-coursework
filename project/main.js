@@ -23,6 +23,7 @@ const init = async () => {
     let authorize = await fetch(`${baseURL}/authorize/${auth_code}`);
     if(authorize.ok){
         authorize = await authorize.json();
+        console.log(authorize);
         fetch_options = {
             headers:{
                 Authorization: 'Bearer ' + authorize.body.access_token
