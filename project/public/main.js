@@ -52,6 +52,8 @@ const init = async () => {
         document.querySelector('.vault article').innerHTML = empty_vault;
         await get_vault_items();
 
+        document.querySelector('.search button').onclick = search_items;
+
         show_inventory();
     }
     else{
@@ -60,6 +62,16 @@ const init = async () => {
     }
 };
 init();
+
+const search_items = () => {
+    const query = document.querySelector('.search input').value;
+    let elems = document.querySelectorAll('.vault article div');
+    const results = document.querySelector('.sidebar section');
+    results.innerHTML = '';
+    elems.filter(elem => elem.dataset.item_name.includes(query)).forEach(elem => {
+        results.appendChild(elem.cloneNode());
+    });
+};
 
 const show_inventory = () => {
     document.querySelector('.inventory').style.display = "block";
