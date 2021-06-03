@@ -50,7 +50,7 @@ const init = async () => {
             empty_vault += `<div></div>`;
         }
         document.querySelector('.vault article').innerHTML = empty_vault;
-        get_vault_items();
+        await get_vault_items();
 
         show_inventory();
     }
@@ -90,9 +90,7 @@ const show_char_items = ev => {
 };
 
 const show_vault_items = ev => {
-    reset_vault();
     show_vault();
-    get_vault_items();
 };
 
 const set_item_elem = async (item, elem) => {
