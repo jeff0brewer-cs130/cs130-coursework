@@ -23,7 +23,70 @@ body{
     "a c";
 }
 
+main{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    
+    pointer-events: none;
+}
+
+.loading{
+    font-size: 50px;
+}
+
+.equip{
+    display: none;
+    width: 250px;
+    height: fit-content;
+
+    background-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    text-align: center;
+}
+
+.equip header{
+    width: 100%;
+    height: 50px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.equip > div{
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+}
+
+.equip > nav > div{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-style: solid;
+    border-color: white;
+    border-width: 1px 0 0 0;
+}
+
 .sidebar{
+    display: none;
     grid-area: a;
     border-style: solid;
     border-width: 0 1px 0 0;
@@ -202,6 +265,7 @@ body{
 }
 
 .loadouts{
+    display: none;
     grid-area: c;
     border-style: solid;
     border-width: 1px 0 0 0;

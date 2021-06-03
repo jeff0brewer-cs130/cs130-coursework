@@ -20,7 +20,6 @@ const bungieEnum = {
 
 let fetch_options = {};
 let user = {};
-let empty_vault = '';
 
 const init = async () => {
     let authorize = await fetch(`${baseURL}/authorize/${auth_code}`);
@@ -46,20 +45,29 @@ const init = async () => {
             char_elem[i].onclick = show_char_items;
         }
         document.querySelector('.vault-tab').onclick = show_vault_items;
+        let s = '';
         for(let i = 0; i < 500; i++){
-            empty_vault += `<div></div>`;
+            s += '<div></div>';
         }
-        document.querySelector('.vault article').innerHTML = empty_vault;
+        document.querySelector('.vault article').innerHTML = s;
         await get_vault_items();
 
         document.querySelector('.search button').onclick = search_items;
+        
+        stop_load();
     }
     else{
         console.log('login failed');
-        window.location.href = "./login.html";
+        // window.location.href = "./login.html";
     }
 };
 init();
+
+const stop_load = () => {
+    document.querySelector('.sidebar').style.display = block;
+    document.querySelector('.loadouts').style.display = block;
+    document.querySelector('.loading').style.display = none;
+};
 
 const search_items = () => {
     const query = document.querySelector('.search input').value.toLowerCase();
@@ -88,8 +96,8 @@ const reset_inventory = () => {
     })
 };
 
-const reset_vault = () => {
-    document.querySelector('.vault article').innerHTML = empty_vault;
+const equip_item = ev => {
+
 };
 
 const show_char_items = ev => {
