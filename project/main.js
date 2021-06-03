@@ -13,7 +13,8 @@ const bungieEnum = {
         arms: 3551918588,
         chest: 14239492,
         legs: 20886954,
-        classitem: 1585787867
+        classitem: 1585787867,
+        vault: 138197802
     }
 };
 
@@ -95,7 +96,8 @@ const show_vault_items = ev => {
 const get_vault_items = async () => {
     let vault_items = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/ProfileInventories`, fetch_options);
     vault_items = await vault_items.json();
-    vault_items = vault_items.profileInventory.data.items.filter(item => item.bucketHash == 138197802);
+    vault_items = vault_items.profileInventory.data.items.filter(item => item.bucketHash == bungieEnum.bucket.vault);
+    vault_items = vault_items.sort((a, b) => (a.itemHash > b.itemHash) ? 1 : -1);
     console.log(vault_items);
 
     const elems = document.querySelectorAll('.vault article div');
