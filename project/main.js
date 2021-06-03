@@ -50,6 +50,9 @@ const init = async () => {
             empty_vault += `<div></div>`;
         }
         document.querySelector('.vault article').innerHTML = empty_vault;
+        get_vault_items();
+
+        show_inventory();
     }
     else{
         console.log('login failed');
@@ -71,7 +74,6 @@ const show_vault = () => {
 const reset_inventory = () => {
     document.querySelectorAll('.inventory div').forEach(elem => {
         elem.setAttribute('data-instance_id', -1);
-        elem.style.borderColor = '#555';
         elem.style.backgroundImage = '';
     })
 };
@@ -93,12 +95,19 @@ const show_vault_items = ev => {
     get_vault_items();
 };
 
+const set_item_elem = async (item, elem) => {
+    let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
+    item_info = await item_info.json();
+    console.log(item_info);
+    elem.setAttribute('data-instance_id', item.itemInstanceId);
+    elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
+};
+
 const get_vault_items = async () => {
     let vault_items = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/ProfileInventories`, fetch_options);
     vault_items = await vault_items.json();
     vault_items = vault_items.profileInventory.data.items.filter(item => item.bucketHash == bungieEnum.bucket.vault);
     vault_items = vault_items.sort((a, b) => (a.itemHash > b.itemHash) ? 1 : -1);
-    console.log(vault_items);
 
     const elems = document.querySelectorAll('.vault article div');
     let i = 0;
@@ -106,14 +115,6 @@ const get_vault_items = async () => {
         set_item_elem(item, elems[i]);
         i++;
     });
-};
-
-const set_item_elem = async (item, elem) => {
-    let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
-    item_info = await item_info.json();
-    elem.setAttribute('data-instance_id', item.itemInstanceId);
-    elem.style.borderColor = '#FFF';
-    elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
 };
 
 const get_char_equipped = async (ev) => {
