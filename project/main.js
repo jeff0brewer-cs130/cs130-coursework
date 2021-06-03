@@ -95,8 +95,7 @@ const show_vault_items = ev => {
 const get_vault_items = async () => {
     let vault_items = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/ProfileInventories`, fetch_options);
     vault_items = await vault_items.json();
-    console.log(vault_items);
-    vault_items = vault_items.data.items.filter(item => item.bucketHash == 138197802);
+    vault_items = vault_items.profileInventory.data.items.filter(item => item.bucketHash == 138197802);
     console.log(vault_items);
 };
 

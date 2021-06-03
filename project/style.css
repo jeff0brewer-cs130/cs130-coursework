@@ -104,6 +104,9 @@ body{
 .vault > article > div{
     width: 20%;
     padding-bottom: 20%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
 }
 
 .inventory{
