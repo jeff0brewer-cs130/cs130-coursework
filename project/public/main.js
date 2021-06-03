@@ -67,7 +67,7 @@ const search_items = () => {
     results.innerHTML = '';
     let elems = Array.from(document.querySelectorAll('.vault article div'));
     console.log(elems);
-    elems.filter(elem => elem.dataset.item_name.includes(query)).forEach(elem => {
+    elems.filter(elem => elem.dataset.item_name && elem.dataset.item_name.includes(query)).forEach(elem => {
         results.appendChild(elem.cloneNode());
     });
 };
