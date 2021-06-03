@@ -53,20 +53,20 @@ const init = async () => {
         await get_vault_items();
 
         document.querySelector('.search button').onclick = search_items;
-        
+
         stop_load();
     }
     else{
         console.log('login failed');
-        // window.location.href = "./login.html";
+        window.location.href = "./login.html";
     }
 };
 init();
 
 const stop_load = () => {
-    document.querySelector('.sidebar').style.display = block;
-    document.querySelector('.loadouts').style.display = block;
-    document.querySelector('.loading').style.display = none;
+    document.querySelector('.sidebar').style.display = "block";
+    document.querySelector('.loadouts').style.display = "block";
+    document.querySelector('.loading').style.display = "none";
 };
 
 const search_items = () => {
