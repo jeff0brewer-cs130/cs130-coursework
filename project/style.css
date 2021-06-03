@@ -94,6 +94,18 @@ body{
     border-color: white;
 }
 
+.vault > article{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.vault > article > div{
+    width: 20%;
+    padding-bottom: 20%;
+}
+
 .inventory{
     grid-area: b;
     overflow-y: scroll;

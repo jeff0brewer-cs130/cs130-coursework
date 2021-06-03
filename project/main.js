@@ -19,6 +19,7 @@ const bungieEnum = {
 
 let fetch_options = {};
 let user = {};
+let empty_vault = '';
 
 const init = async () => {
     let authorize = await fetch(`${baseURL}/authorize/${auth_code}`);
@@ -44,6 +45,10 @@ const init = async () => {
             char_elem[i].onclick = show_char_items;
         }
         document.querySelector('.vault-tab').onclick = show_vault_items;
+        for(let i = 0; i < 500; i++){
+            empty_vault += `<div></div>`;
+        }
+        document.querySelector('.vault').innerHTML = empty_vault;
     }
     else{
         console.log('login failed');
@@ -71,7 +76,7 @@ const reset_inventory = () => {
 };
 
 const reset_vault = () => {
-    document.querySelector('.vault').innerHTML = '';
+    document.querySelector('.vault').innerHTML = empty_vault;
 };
 
 const show_char_items = ev => {
@@ -90,6 +95,7 @@ const show_vault_items = ev => {
 const get_vault_items = async () => {
     let vault_items = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/ProfileInventories`, fetch_options);
     vault_items = await vault_items.json();
+    console.log(vault_items);
     vault_items = vault_items.data.items.filter(item => item.bucketHash == 138197802);
     console.log(vault_items);
 };
