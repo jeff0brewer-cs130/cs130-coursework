@@ -62,11 +62,10 @@ const init = async () => {
 init();
 
 const search_items = () => {
-    const query = document.querySelector('.search input').value;
+    const query = document.querySelector('.search input').value.toLowerCase();
     const results = document.querySelector('.sidebar section');
     results.innerHTML = '';
     let elems = Array.from(document.querySelectorAll('.vault article div'));
-    console.log(elems);
     elems.filter(elem => elem.dataset.item_name && elem.dataset.item_name.includes(query)).forEach(elem => {
         results.appendChild(elem.cloneNode());
     });
@@ -108,7 +107,7 @@ const set_item_elem = async (item, elem) => {
     let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
     item_info = await item_info.json();
     elem.setAttribute('data-instance_id', item.itemInstanceId);
-    elem.setAttribute('data-item_name', item_info.name);
+    elem.setAttribute('data-item_name', item_info.name.toLowerCase());
     elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
 };
 
