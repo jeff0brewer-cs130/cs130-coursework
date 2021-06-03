@@ -43,7 +43,7 @@ const init = async () => {
             char_elem[i].innerHTML = bungieEnum.classType[char_info[curr_id].classType];
             char_elem[i].onclick = show_char_items;
         }
-        document.querySelector('.vault-tab').onclick = show_vault_items();
+        document.querySelector('.vault-tab').onclick = show_vault_items;
     }
     else{
         console.log('login failed');
