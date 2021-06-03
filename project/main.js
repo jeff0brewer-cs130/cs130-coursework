@@ -41,8 +41,9 @@ const init = async () => {
             char_elem[i].setAttribute('data-char_id', curr_id);
             char_elem[i].style.backgroundImage = `url(${imageURL + char_info[curr_id].emblemBackgroundPath})`;
             char_elem[i].innerHTML = bungieEnum.classType[char_info[curr_id].classType];
-            char_elem[i].onclick = get_char_items;
+            char_elem[i].onclick = show_char_items;
         }
+        document.querySelector('.vault-tab').onclick = show_vault_items();
     }
     else{
         console.log('login failed');
@@ -50,6 +51,16 @@ const init = async () => {
     }
 };
 init();
+
+const show_inventory = () => {
+    document.querySelector('.inventory').style.display = "block";
+    document.querySelector('.vault').style.display = "none";
+};
+
+const show_vault = () => {
+    document.querySelector('.vault').style.display = "block";
+    document.querySelector('.inventory').style.display = "none";
+};
 
 const reset_inventory = () => {
     document.querySelectorAll('.inventory div').forEach(elem => {
@@ -59,10 +70,27 @@ const reset_inventory = () => {
     })
 };
 
-const get_char_items = ev => {
+const reset_vault = () => {
+    document.querySelector('.vault').innerHTML = '';
+};
+
+const show_char_items = ev => {
     reset_inventory();
+    show_inventory();
     get_char_inventory(ev);
     get_char_equipped(ev);
+};
+
+const show_vault_items = ev => {
+    reset_vault();
+    show_vault();
+    get_vault_items();
+};
+
+const get_vault_items = async () => {
+    let vault_items = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/ProfileInventories`, fetch_options);
+    vault_items = await vault_items.json();
+    console.log(vault_items);
 };
 
 const set_item_elem = async (item, elem) => {
