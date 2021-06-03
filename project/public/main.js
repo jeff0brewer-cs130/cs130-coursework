@@ -53,8 +53,6 @@ const init = async () => {
         await get_vault_items();
 
         document.querySelector('.search button').onclick = search_items;
-
-        show_inventory();
     }
     else{
         console.log('login failed');
@@ -65,9 +63,9 @@ init();
 
 const search_items = () => {
     const query = document.querySelector('.search input').value;
-    let elems = document.querySelectorAll('.vault article div');
     const results = document.querySelector('.sidebar section');
     results.innerHTML = '';
+    let elems = Array.from(document.querySelectorAll('.vault article div'));
     elems.filter(elem => elem.dataset.item_name.includes(query)).forEach(elem => {
         results.appendChild(elem.cloneNode());
     });
