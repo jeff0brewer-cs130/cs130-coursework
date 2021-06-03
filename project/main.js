@@ -48,7 +48,7 @@ const init = async () => {
         for(let i = 0; i < 500; i++){
             empty_vault += `<div></div>`;
         }
-        document.querySelector('.vault').innerHTML = empty_vault;
+        document.querySelector('.vault article').innerHTML = empty_vault;
     }
     else{
         console.log('login failed');
@@ -76,7 +76,7 @@ const reset_inventory = () => {
 };
 
 const reset_vault = () => {
-    document.querySelector('.vault').innerHTML = empty_vault;
+    document.querySelector('.vault article').innerHTML = empty_vault;
 };
 
 const show_char_items = ev => {
@@ -97,6 +97,12 @@ const get_vault_items = async () => {
     vault_items = await vault_items.json();
     vault_items = vault_items.profileInventory.data.items.filter(item => item.bucketHash == 138197802);
     console.log(vault_items);
+    const elems = document.querySelectorAll('.vault article div');
+    let i = 0;
+    vault_items.forEach(item => {
+        set_item_elem(item, elems[i]);
+        i++;
+    });
 };
 
 const set_item_elem = async (item, elem) => {
@@ -111,7 +117,7 @@ const get_char_equipped = async (ev) => {
     let char_equipped = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/CharacterEquipment`, fetch_options);
     char_equipped = await char_equipped.json();
     char_equipped = char_equipped.characterEquipment.data[ev.target.dataset.char_id].items;
-    let elem = null;
+
     char_equipped.forEach(item => {
         switch(item.bucketHash){
             case bungieEnum.bucket.kinetic:
