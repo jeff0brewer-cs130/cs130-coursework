@@ -98,8 +98,8 @@ const show_vault_items = ev => {
 const set_item_elem = async (item, elem) => {
     let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
     item_info = await item_info.json();
-    console.log(item_info);
     elem.setAttribute('data-instance_id', item.itemInstanceId);
+    elem.setAttribute('data-item_name', item_info.name);
     elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
 };
 
