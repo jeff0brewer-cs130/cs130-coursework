@@ -77,6 +77,14 @@ const init = async () => {
 };
 init();
 
+const clear_item = elem => {
+    b.dataset.item_hash = '';
+    b.dataset.instance_id = '';
+    b.dataset.bucket = '';
+    b.dataset.item_name = '';
+    b.style.backgroundImage = '';
+};
+
 const copy_attributes = (a, b) => {
     b.dataset.item_hash = a.dataset.item_hash;
     b.dataset.instance_id = a.dataset.instance_id;
@@ -92,7 +100,7 @@ const swap_items = (a, b) => {
 };
 
 const set_item_elem = async (item, elem) => {
-    if(elem){
+    if(item.bucketHash in bungieEnum.bucket.dict){
         let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
         item_info = await item_info.json();
         elem.setAttribute('data-item_hash', item.itemHash);
@@ -101,9 +109,6 @@ const set_item_elem = async (item, elem) => {
         elem.setAttribute('data-item_name', item_info.name.toLowerCase());
         elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
         elem.onclick = start_move;
-    }
-    else{
-        console.log(item);
     }
 };
 
@@ -128,11 +133,27 @@ const equip_item = async ev => {
 const vault_item = async ev => {
     const item_hash = curr_item.dataset.item_hash;
     const item_id = curr_item.dataset.instance_id;
+    const char_id = curr_char;
 
-    let res = await fetch(`${baseURL}/vaultitem/${item_hash}/${item_id}/${curr_char}/${user.member_type}`, fetch_options);
+    let res = await fetch(`${baseURL}/transfervault/true/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
     if(res.status == 200){
         swap_items(curr_item, document.querySelectorAll('.vault article div')[vault_ind]);
         vault_ind++;
+    }
+    equip_menu.style.display = 'none';
+};
+
+const unvault_item = async ev => {
+    const item_hash = curr_item.dataset.item_hash;
+    const item_id = curr_item.dataset.instance_id;
+    const char_id = ev.target.dataset.char_id;
+
+    let res = await fetch(`${baseURL}/transfervault/false/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
+    if(res.status == 200){
+        vault_ind--;
+        const end_vault = document.querySelectorAll('.vault article div')[vault_ind];
+        swap_items(curr_item, end_vault)
+        clear_item(end_vault);
     }
     equip_menu.style.display = 'none';
 };
@@ -186,6 +207,14 @@ const show_char_items = async ev => {
 };
 
 const show_vault_items = ev => {
+    curr_char = 'vault';
+    const equip_buttons = equip_menu.querySelectorAll('.equip_char');
+    const char_buttons = document.querySelectorAll('.character');
+
+    for(let i = 0; i < equip_buttons.length; i++){
+        equip_buttons[i].onclick = unvault_item;
+        equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
+    }
     show_vault();
 };
 
