@@ -40,6 +40,13 @@ const init = async () => {
             }
         }
         console.log('login success');
+
+        document.querySelector('.vault-tab').onclick = show_vault_items;
+        let s = '';
+        for(let i = 0; i < 500; i++){
+            s += '<div></div>';
+        }
+        document.querySelector('.vault article').innerHTML = s;
         get_vault_items();
 
         let char_info = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/Characters`, fetch_options);
@@ -61,12 +68,6 @@ const init = async () => {
             equip_elem[i].style.backgroundImage = emblem;
             equip_elem[i].innerHTML = char_class;
         }
-        document.querySelector('.vault-tab').onclick = show_vault_items;
-        let s = '';
-        for(let i = 0; i < 500; i++){
-            s += '<div></div>';
-        }
-        document.querySelector('.vault article').innerHTML = s;
         document.querySelector('.search button').onclick = search_items;
         document.querySelector('.equip_vault').onclick = vault_item;
         document.querySelector('.cancel_equip').onclick = () => { equip_menu.style.display = 'none'; };
@@ -140,6 +141,15 @@ const set_move_mode = mode => {
             equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
         }
     }
+    if(mode == 'search'){
+        const equip_buttons = equip_menu.querySelectorAll('.equip_char');
+        const char_buttons = document.querySelectorAll('.character');
+
+        for(let i = 0; i < equip_buttons.length; i++){
+            equip_buttons[i].onclick = unsearch_item;
+            equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
+        }
+    }
 };
 
 const start_move = ev => {
@@ -154,8 +164,7 @@ const equip_item = async ev => {
 
     let res = await fetch(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`, fetch_options);
     if(res.status == 200){
-        const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket} div`);
-        swap_items(curr_item, equipped_item);
+        swap_items(curr_item, document.querySelector(`.equipped .${curr_item.dataset.bucket} div`));
     }
     equip_menu.style.display = 'none';
 };
@@ -187,6 +196,22 @@ const unvault_item = async ev => {
     equip_menu.style.display = 'none';
 };
 
+const unsearch_item = async ev => {
+    const item_hash = curr_item.dataset.item_hash;
+    const item_id = curr_item.dataset.instance_id;
+    const char_id = ev.target.dataset.char_id;
+
+    let res = await fetch(`${baseURL}/transfervault/false/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
+    if(res.status == 200){
+        if(curr_char == char_id){
+            let inv_items = document.getElementById('${curr_item.dataset.bucket}_inv').querySelectorAll('div');
+            swap_items(curr_item, inv_items[inv_items.length - 1]);
+        }
+        clear_item(curr_item);
+    }
+    equip_menu.style.display = 'none';
+};
+
 const transfer_item = async ev => {
     const item_hash = curr_item.dataset.item_hash;
     const item_id = curr_item.dataset.instance_id;
@@ -210,7 +235,7 @@ const search_items = () => {
     });
     results.querySelectorAll('div').forEach(elem => {
         elem.onclick = ev => {
-            set_move_mode('vault');
+            set_move_mode('search');
             start_move(ev);
         };
     });
