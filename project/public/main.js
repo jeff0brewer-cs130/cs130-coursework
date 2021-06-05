@@ -78,11 +78,11 @@ const init = async () => {
 init();
 
 const clear_item = elem => {
-    b.dataset.item_hash = '';
-    b.dataset.instance_id = '';
-    b.dataset.bucket = '';
-    b.dataset.item_name = '';
-    b.style.backgroundImage = '';
+    elem.dataset.item_hash = '';
+    elem.dataset.instance_id = '';
+    elem.dataset.bucket = '';
+    elem.dataset.item_name = '';
+    elem.style.backgroundImage = '';
 };
 
 const copy_attributes = (a, b) => {
