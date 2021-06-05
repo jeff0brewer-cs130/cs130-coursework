@@ -74,13 +74,18 @@ const init = async () => {
 };
 init();
 
-const swap_nodes = (a, b) => {
-    const parentA = a.parentNode;
-    const parentB = b.parentNode;
-    parentA.insertBefore(b.cloneNode(), parentA.firstChild);
-    parentB.insertBefore(a.cloneNode(), parentB.firstChild);
-    a.remove();
-    b.remove();
+const copy_attributes = (a, b) => {
+    b.dataset.item_hash = a.dataset.item_hash;
+    b.dataset.instance_id = a.dataset.instance_id;
+    b.dataset.bucket = a.dataset.bucket;
+    b.dataset.item_name = a.dataset.item_name;
+    b.style.backgroundImage = a.style.backgroundImage;
+};
+
+const swap_items = (a, b) => {
+    const old_b = b.cloneNode();
+    copy_attributes(a, b);
+    copy_attributes(old_b, a);
 };
 
 const set_item_elem = async (item, elem) => {
@@ -107,7 +112,7 @@ const equip_item = async ev => {
     equip_menu.style.display = 'none';
     
     const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket}`);
-    swap_nodes(curr_item, equipped_item);
+    swap_items(curr_item, equipped_item);
 };
 
 const search_items = () => {
