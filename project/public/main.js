@@ -23,6 +23,7 @@ const bungieEnum = {
 const equip_menu = document.querySelector('.equip');
 let curr_item = null;
 let curr_char = null;
+let vault_ind = -1;
 
 let fetch_options = {};
 let user = {};
@@ -84,15 +85,6 @@ const copy_attributes = (a, b) => {
     b.style.backgroundImage = a.style.backgroundImage;
 };
 
-const clear_item = elem => {
-    elem.dataset.item_hash = '';
-    elem.dataset.instance_id = '';
-    elem.dataset.bucket = '';
-    elem.dataset.item_name = '';
-    elem.style.backgroundImage = '';
-    elem.onclick = null;
-};
-
 const swap_items = (a, b) => {
     const old_b = b.cloneNode();
     copy_attributes(a, b);
@@ -100,14 +92,19 @@ const swap_items = (a, b) => {
 };
 
 const set_item_elem = async (item, elem) => {
-    let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
-    item_info = await item_info.json();
-    elem.setAttribute('data-item_hash', item.itemHash);
-    elem.setAttribute('data-instance_id', item.itemInstanceId);
-    elem.setAttribute('data-bucket', bungieEnum.bucket.dict[item.bucketHash]);
-    elem.setAttribute('data-item_name', item_info.name.toLowerCase());
-    elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
-    elem.onclick = start_move;
+    if(elem){
+        let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
+        item_info = await item_info.json();
+        elem.setAttribute('data-item_hash', item.itemHash);
+        elem.setAttribute('data-instance_id', item.itemInstanceId);
+        elem.setAttribute('data-bucket', bungieEnum.bucket.dict[item.bucketHash]);
+        elem.setAttribute('data-item_name', item_info.name.toLowerCase());
+        elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
+        elem.onclick = start_move;
+    }
+    else{
+        console.log(item);
+    }
 };
 
 const start_move = ev => {
@@ -133,9 +130,9 @@ const vault_item = async ev => {
     const item_id = curr_item.dataset.instance_id;
 
     let res = await fetch(`${baseURL}/vaultitem/${item_hash}/${item_id}/${curr_char}/${user.member_type}`, fetch_options);
-    console.log(res);
     if(res.status == 200){
-        clear_item(curr_item);
+        swap_items(curr_item, document.querySelectorAll('.vault article div')[vault_ind]);
+        vault_ind++;
     }
     equip_menu.style.display = 'none';
 };
@@ -197,6 +194,7 @@ const get_vault_items = async () => {
     vault_items = await vault_items.json();
     vault_items = vault_items.profileInventory.data.items.filter(item => item.bucketHash == bungieEnum.bucket.vault);
     vault_items = vault_items.sort((a, b) => (a.itemHash > b.itemHash) ? 1 : -1);
+    vault_ind = vault_items.length;
 
     const elems = document.querySelectorAll('.vault article div');
     let i = 0;
