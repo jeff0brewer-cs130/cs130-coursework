@@ -23,7 +23,6 @@ const bungieEnum = {
 const equip_menu = document.querySelector('.equip');
 let curr_item = null;
 let curr_char = 'vault';
-let vault_ind = -1;
 
 let fetch_options = {};
 let user = {};
@@ -164,8 +163,7 @@ const vault_item = async ev => {
 
     let res = await fetch(`${baseURL}/transfervault/true/${item_hash}/${item_id}/${curr_char}/${user.member_type}`, fetch_options);
     if(res.status == 200){
-        swap_items(curr_item, document.querySelectorAll('.vault article div')[vault_ind]);
-        vault_ind++;
+        clear_item(curr_item);
     }
     equip_menu.style.display = 'none';
 };
@@ -177,10 +175,7 @@ const unvault_item = async ev => {
 
     let res = await fetch(`${baseURL}/transfervault/false/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
     if(res.status == 200){
-        vault_ind--;
-        const end_vault = document.querySelectorAll('.vault article div')[vault_ind];
-        swap_items(curr_item, end_vault)
-        clear_item(end_vault);
+        clear_item(curr_item);
     }
     equip_menu.style.display = 'none';
 };
@@ -234,7 +229,6 @@ const get_vault_items = async () => {
     vault_items = await vault_items.json();
     vault_items = vault_items.profileInventory.data.items.filter(item => item.bucketHash == bungieEnum.bucket.vault);
     vault_items = vault_items.sort((a, b) => (a.itemHash > b.itemHash) ? 1 : -1);
-    vault_ind = vault_items.length;
 
     const elems = document.querySelectorAll('.vault article div');
     let i = 0;
