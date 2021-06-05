@@ -79,8 +79,8 @@ const start_move = ev => {
 const equip_item = async ev => {
     const item_id = equip_menu.querySelector('div').dataset.instance_id;
     const char_id = ev.target.dataset.char_id;
-
-    let res = await fetch(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`);
+    console.log(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`);
+    let res = await fetch(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`, fetch_options);
     console.log(res);
 };
 
@@ -113,7 +113,11 @@ const reset_inventory = () => {
 
 const show_char_items = ev => {
     let equip_buttons = equip_menu.querySelectorAll('.equip_char');
+    console.log(equip_buttons);
     for(let i = 0; i < equip_buttons.length; i++){
+        console.log(`${equip_buttons[i].dataset.char_id} ${ev.target.dataset.char_id}`);
+        console.log(equip_buttons[i].dataset.char_id == ev.target.dataset.char_id);
+
         if(equip_buttons[i].dataset.char_id == ev.target.dataset.char_id){
             equip_buttons[i].onclick = equip_item;
         }
