@@ -232,6 +232,7 @@ const get_char_inventory = async (ev) => {
     };
     char_inventory.forEach(item => {
         const bucket = bungieEnum.bucket.dict[item.bucketHash];
+        console.log(`${bucket}_inv`);
         let elem = document.getElementById(`${bucket}_inv`).querySelectorAll('div')[inv_index[bucket]];
         inv_index[bucket]++;
         set_item_elem(item, elem);
