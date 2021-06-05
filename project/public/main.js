@@ -74,6 +74,17 @@ const init = async () => {
 };
 init();
 
+const set_item_elem = async (item, elem) => {
+    let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
+    item_info = await item_info.json();
+    elem.setAttribute('data-item_hash', item.itemHash);
+    elem.setAttribute('data-instance_id', item.itemInstanceId);
+    elem.setAttribute('data-bucket', bungieEnum.bucket.dict[item.bucketHash]);
+    elem.setAttribute('data-item_name', item_info.name.toLowerCase());
+    elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
+    elem.onclick = start_move;
+};
+
 const start_move = ev => {
     equip_menu.replaceChild(ev.target.cloneNode(), equip_menu.querySelector('div'));
     equip_menu.style.display = 'block';
@@ -81,10 +92,14 @@ const start_move = ev => {
 };
 
 const equip_item = async ev => {
-    const item_id = equip_menu.querySelector('div').dataset.instance_id;
+    const item_id = curr_item.dataset.instance_id;
     const char_id = ev.target.dataset.char_id;
     let res = await fetch(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`, fetch_options);
     equip_menu.style.display = 'none';
+    
+    const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket}`);
+    curr_item.parentElement.replaceChild(curr_item, equipped_item);
+    equipped_item.parentElement.replaceChild(equipped_item, curr_item);
 };
 
 const search_items = () => {
@@ -136,17 +151,6 @@ const show_char_items = async ev => {
 
 const show_vault_items = ev => {
     show_vault();
-};
-
-const set_item_elem = async (item, elem) => {
-    let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
-    item_info = await item_info.json();
-    elem.setAttribute('data-item_hash', item.itemHash);
-    elem.setAttribute('data-instance_id', item.itemInstanceId);
-    elem.setAttribute('data-bucket', item.bucketHash);
-    elem.setAttribute('data-item_name', item_info.name.toLowerCase());
-    elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
-    elem.onclick = start_move;
 };
 
 const get_vault_items = async () => {
