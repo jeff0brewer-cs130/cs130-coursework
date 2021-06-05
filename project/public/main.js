@@ -36,13 +36,21 @@ const init = async () => {
         let char_info = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/Characters`, fetch_options);
         char_info = await char_info.json();
         char_info = char_info.characters.data;
-        char_elem = document.querySelectorAll('.character');
+        let char_elem = document.querySelectorAll('.character');
+        let equip_elem = document.querySelectorAll('.equip_char');
         for(let i = 0; i < 3; i++){
-            let curr_id = Object.keys(char_info)[i];
+            const curr_id = Object.keys(char_info)[i];
+            const emblem = `url(${imageURL + char_info[curr_id].emblemBackgroundPath})`;
+            const char_class = bungieEnum.classType[char_info[curr_id].classType];
+
             char_elem[i].setAttribute('data-char_id', curr_id);
-            char_elem[i].style.backgroundImage = `url(${imageURL + char_info[curr_id].emblemBackgroundPath})`;
-            char_elem[i].innerHTML = bungieEnum.classType[char_info[curr_id].classType];
+            char_elem[i].style.backgroundImage = emblem;
+            char_elem[i].innerHTML = char_class;
             char_elem[i].onclick = show_char_items;
+
+            equip_elem[i].setAttribute('data-char_id', curr_id);
+            equip_elem[i].style.backgroundImage = emblem;
+            equip_elem[i].innerHTML = char_class;
         }
         document.querySelector('.vault-tab').onclick = show_vault_items;
         let s = '';
