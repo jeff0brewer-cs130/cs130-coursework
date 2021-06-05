@@ -74,6 +74,15 @@ const init = async () => {
 };
 init();
 
+const swap_nodes = (a, b) => {
+    const parentA = a.parentNode;
+    const parentB = b.parentNode;
+    parentA.insertBefore(b.cloneNode(), parentA.firstChild);
+    parentB.insertBefore(a.cloneNode(), parentB.firstChild);
+    a.remove();
+    b.remove();
+};
+
 const set_item_elem = async (item, elem) => {
     let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
     item_info = await item_info.json();
@@ -98,8 +107,7 @@ const equip_item = async ev => {
     equip_menu.style.display = 'none';
     
     const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket}`);
-    curr_item.parentElement.replaceChild(curr_item, equipped_item);
-    equipped_item.parentElement.replaceChild(equipped_item, curr_item);
+    swap_nodes(curr_item, equipped_item);
 };
 
 const search_items = () => {
