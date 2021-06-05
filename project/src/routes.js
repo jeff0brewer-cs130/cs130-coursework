@@ -102,7 +102,7 @@ router.route("/equipitem/:item_id/:char_id/:mem_type")
             }
         })
         .then(response => {
-            res.status(200).send(response.data.Response);
+            res.status(200).send();
         })
         .catch(err => {
             console.log(err);

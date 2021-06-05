@@ -79,9 +79,9 @@ const start_move = ev => {
 const equip_item = async ev => {
     const item_id = equip_menu.querySelector('div').dataset.instance_id;
     const char_id = ev.target.dataset.char_id;
-    console.log(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`);
     let res = await fetch(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`, fetch_options);
-    console.log(res);
+    equip_menu.style.display = 'none';
+    show_char_items(ev);
 };
 
 const search_items = () => {
@@ -112,17 +112,17 @@ const reset_inventory = () => {
 };
 
 const show_char_items = ev => {
-    let equip_buttons = equip_menu.querySelectorAll('.equip_char');
-    console.log(equip_buttons);
-    for(let i = 0; i < equip_buttons.length; i++){
-        console.log(`${equip_buttons[i].dataset.char_id} ${ev.target.dataset.char_id}`);
-        console.log(equip_buttons[i].dataset.char_id == ev.target.dataset.char_id);
+    const equip_buttons = equip_menu.querySelectorAll('.equip_char');
+    const char_buttons = document.querySelectorAll('.character');
 
+    for(let i = 0; i < equip_buttons.length; i++){
         if(equip_buttons[i].dataset.char_id == ev.target.dataset.char_id){
             equip_buttons[i].onclick = equip_item;
+            equip_buttons[i].innerHTML = 'Equip';
         }
         else{
             equip_buttons[i].onclick = null;
+            equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
         }
     }
     reset_inventory();
