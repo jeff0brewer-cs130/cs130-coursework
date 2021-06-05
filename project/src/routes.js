@@ -39,12 +39,12 @@ router.route("/authorize/:auth_code")
                         }));
                     })
                     .catch(err => {
-                        console.log(err);
+                        console.log('authorization failed');
                         res.status(500).send();
                     })
             })
             .catch(err => {
-                console.log(err);
+                console.log('authorization failed');
                 res.status(500).send();
             });
     });

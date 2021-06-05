@@ -88,15 +88,6 @@ const swap_items = (a, b) => {
     copy_attributes(old_b, a);
 };
 
-const swap_nodes = (a, b) => {
-    const par_a = a.parentNode;
-    const par_b = b.parentNode;
-    par_a.insertBefore(b.cloneNode(), par_a.firstChild);
-    par_b.insertBefore(a.cloneNode(), par_b.firstChild);
-    a.remove();
-    b.remove();
-};
-
 const set_item_elem = async (item, elem) => {
     let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
     item_info = await item_info.json();
@@ -121,7 +112,7 @@ const equip_item = async ev => {
     equip_menu.style.display = 'none';
     
     const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket} div`);
-    swap_nodes(curr_item, equipped_item);
+    swap_items(curr_item, equipped_item);
 };
 
 const search_items = () => {
