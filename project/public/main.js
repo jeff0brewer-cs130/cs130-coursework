@@ -110,9 +110,11 @@ const equip_item = async ev => {
     const char_id = ev.target.dataset.char_id;
     let res = await fetch(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`, fetch_options);
     equip_menu.style.display = 'none';
-    
-    const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket} div`);
-    swap_items(curr_item, equipped_item);
+    console.log(res);
+    if(res.status == 200){
+        const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket} div`);
+        swap_items(curr_item, equipped_item);
+    }
 };
 
 const search_items = () => {
