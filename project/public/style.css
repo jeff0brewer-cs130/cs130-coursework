@@ -89,7 +89,7 @@ main{
     border-color: white;
 }
 
-.character{
+.character, .equip_char{
     background-size: cover;
     background-position: left;
 }
