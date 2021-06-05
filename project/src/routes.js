@@ -27,7 +27,7 @@ router.route("/authorize/:auth_code")
                 let token = response.data.access_token;
                 axios.get(`${bungieURL}/User/GetMembershipsForCurrentUser/`, {
                         headers: {
-                            Authorization: 'Bearer ' + token
+                            "Authorization": 'Bearer ' + token
                         }
                     })
                     .then(response => {
@@ -55,7 +55,7 @@ router.route("/getProfile/:member_type/:member_id/:components")
 
         axios.get(`${bungieURL}/Destiny2/${req.params.member_type}/Profile/${req.params.member_id}?components=${req.params.components}`, {
                 headers: {
-                    Authorization: req.header('Authorization')
+                    "Authorization": req.header('Authorization')
                 }
             })
             .then(response => {
@@ -73,7 +73,7 @@ router.route("/itemlookup/:hash")
 
         axios.get(`${bungieURL}/Destiny2/Manifest/DestinyInventoryItemDefinition/${req.params.hash}/`,  {
                 headers: {
-                    Authorization: req.header('Authorization')
+                    "Authorization": req.header('Authorization')
                 }
             })
             .then(response => {
@@ -84,6 +84,31 @@ router.route("/itemlookup/:hash")
                 res.status(500).send();
             });
     });
+
+router.route("/equipitem/:item_id/:char_id/:mem_type")
+.get((req, res) => {
+    console.log(`GET /equipitem/${req.params.item_id}/${req.params.char_id}/${req.params.mem_type}`);
+
+    const data = {
+        "itemId": req.params.item_id,
+        "characterId": req.params.char_id,
+        "membershipType": req.params.mem_type
+    };
+
+    axios.post(`${bungieURL}/Destiny2/Actions/Items/EquipItem/`, data, {
+            headers: {
+                "Authorization": req.header('Authorization'),
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            res.status(200).send(response.data.Response);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send();
+        });
+});
 
 
 module.exports = router;

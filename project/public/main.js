@@ -18,6 +18,8 @@ const bungieEnum = {
     }
 };
 
+const equip_menu = document.querySelector('.equip');
+
 let fetch_options = {};
 let user = {};
 
@@ -70,9 +72,16 @@ const init = async () => {
 init();
 
 const start_move = ev => {
-    const equip_menu = document.querySelector('.equip');
     equip_menu.replaceChild(ev.target.cloneNode(), equip_menu.querySelector('div'));
     equip_menu.style.display = 'block';
+};
+
+const equip_item = async ev => {
+    const item_id = equip_menu.querySelector('div').dataset.instance_id;
+    const char_id = ev.target.dataset.char_id;
+
+    let res = await fetch(`${baseURL}/equipitem/${item_id}/${item_id}/${user.member_type}`);
+    console.log(res);
 };
 
 const search_items = () => {
@@ -103,6 +112,15 @@ const reset_inventory = () => {
 };
 
 const show_char_items = ev => {
+    let equip_buttons = equip_menu.querySelectorAll('equip_char');
+    for(let i = 0; i < equip_buttons.length; i++){
+        if(equip_buttons[i].dataset.char_id == ev.target.dataset.char_id){
+            equip_buttons[i].onclick = equip_item;
+        }
+        else{
+            equip_buttons[i].onclick = null;
+        }
+    }
     reset_inventory();
     show_inventory();
     get_char_inventory(ev);
