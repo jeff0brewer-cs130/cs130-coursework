@@ -110,5 +110,32 @@ router.route("/equipitem/:item_id/:char_id/:mem_type")
         });
 });
 
+router.route("/transferitem/:item_hash/:item_id/:char_id/:mem_type")
+.get((req, res) => {
+    console.log(`GET /transferitem/${req.params.item_hash}/${req.params.item_id}/${req.params.char_id}/${req.params.mem_type}`);
+
+    const data = {
+        "itemReferenceHash": req.params.item_hash,
+        "stackSize": 1,
+        "transferToVault": false,
+        "itemId": req.params.item_id,
+        "characterId": req.params.char_id,
+        "membershipType": req.params.mem_type
+    };
+
+    axios.post(`${bungieURL}/Destiny2/Actions/Items/TransferItem/`, data, {
+            headers: {
+                "Authorization": req.header('Authorization'),
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            res.status(200).send();
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send();
+        });
+});
 
 module.exports = router;

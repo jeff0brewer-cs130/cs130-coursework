@@ -82,6 +82,15 @@ const copy_attributes = (a, b) => {
     b.style.backgroundImage = a.style.backgroundImage;
 };
 
+const clear_item = elem => {
+    elem.dataset.item_hash = '';
+    elem.dataset.instance_id = '';
+    elem.dataset.bucket = '';
+    elem.dataset.item_name = '';
+    elem.style.backgroundImage = '';
+    elem.onclick = null;
+};
+
 const swap_items = (a, b) => {
     const old_b = b.cloneNode();
     copy_attributes(a, b);
@@ -108,9 +117,8 @@ const start_move = ev => {
 const equip_item = async ev => {
     const item_id = curr_item.dataset.instance_id;
     const char_id = ev.target.dataset.char_id;
+
     let res = await fetch(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`, fetch_options);
-    equip_menu.style.display = 'none';
-    console.log(res);
     if(res.status == 200){
         const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket} div`);
         swap_items(curr_item, equipped_item);
@@ -118,6 +126,23 @@ const equip_item = async ev => {
     else{
         alert(res.data.Message);
     }
+    equip_menu.style.display = 'none';
+};
+
+const transfer_item = async ev => {
+    const item_hash = curr_item.dataset.item_hash;
+    const item_id = curr_item.dataset.instance_id;
+    const char_id = ev.target.dataset.char_id;
+
+    let res = await fetch(`${baseURL}/transferitem/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
+    console.log(res);
+    if(res.status == 200){
+        clear_item(curr_item);
+    }
+    else{
+        alert(res.data.Message);
+    }
+    equip_menu.style.display = 'none';
 };
 
 const search_items = () => {
@@ -157,7 +182,7 @@ const show_char_items = async ev => {
             equip_buttons[i].innerHTML = 'Equip';
         }
         else{
-            equip_buttons[i].onclick = null;
+            equip_buttons[i].onclick = transfer_item;
             equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
         }
     }
