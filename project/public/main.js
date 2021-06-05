@@ -61,6 +61,12 @@ const init = async () => {
 };
 init();
 
+const start_move = ev => {
+    const equip_menu = document.querySelector('.equip');
+    equip_menu.replaceChild(ev.target.cloneNode(), equip_menu.querySelector('div'));
+    equip_menu.style.display = 'block';
+};
+
 const search_items = () => {
     const query = document.querySelector('.search input').value.toLowerCase();
     const results = document.querySelector('.sidebar section');
@@ -88,10 +94,6 @@ const reset_inventory = () => {
     })
 };
 
-const equip_item = ev => {
-
-};
-
 const show_char_items = ev => {
     reset_inventory();
     show_inventory();
@@ -106,9 +108,11 @@ const show_vault_items = ev => {
 const set_item_elem = async (item, elem) => {
     let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
     item_info = await item_info.json();
+    elem.setAttribute('data-item_hash', item.itemHash);
     elem.setAttribute('data-instance_id', item.itemInstanceId);
     elem.setAttribute('data-item_name', item_info.name.toLowerCase());
     elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
+    elem.onclick = start_move;
 };
 
 const get_vault_items = async () => {
