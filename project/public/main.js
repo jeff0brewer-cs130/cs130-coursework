@@ -22,6 +22,7 @@ const bungieEnum = {
 
 const equip_menu = document.querySelector('.equip');
 let curr_item = null;
+let curr_char = null;
 
 let fetch_options = {};
 let user = {};
@@ -38,6 +39,8 @@ const init = async () => {
             }
         }
         console.log('login success');
+        get_vault_items();
+
         let char_info = await fetch(`${baseURL}/getProfile/${user.member_type}/${user.member_id}/Characters`, fetch_options);
         char_info = await char_info.json();
         char_info = char_info.characters.data;
@@ -63,9 +66,8 @@ const init = async () => {
             s += '<div></div>';
         }
         document.querySelector('.vault article').innerHTML = s;
-        await get_vault_items();
-
         document.querySelector('.search button').onclick = search_items;
+        document.querySelector('.equip_vault').onclick = vault_item;
     }
     else{
         console.log('login failed');
@@ -123,24 +125,17 @@ const equip_item = async ev => {
         const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket} div`);
         swap_items(curr_item, equipped_item);
     }
-    else{
-        alert(res.data.Message);
-    }
     equip_menu.style.display = 'none';
 };
 
-const transfer_item = async ev => {
+const vault_item = async ev => {
     const item_hash = curr_item.dataset.item_hash;
     const item_id = curr_item.dataset.instance_id;
-    const char_id = ev.target.dataset.char_id;
 
-    let res = await fetch(`${baseURL}/transferitem/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
+    let res = await fetch(`${baseURL}/vaultitem/${item_hash}/${item_id}/${curr_char}/${user.member_type}`, fetch_options);
     console.log(res);
     if(res.status == 200){
         clear_item(curr_item);
-    }
-    else{
-        alert(res.data.Message);
     }
     equip_menu.style.display = 'none';
 };
@@ -173,16 +168,17 @@ const reset_inventory = () => {
 };
 
 const show_char_items = async ev => {
+    curr_char = ev.target.dataset.char_id;
     const equip_buttons = equip_menu.querySelectorAll('.equip_char');
     const char_buttons = document.querySelectorAll('.character');
 
     for(let i = 0; i < equip_buttons.length; i++){
-        if(equip_buttons[i].dataset.char_id == ev.target.dataset.char_id){
+        if(equip_buttons[i].dataset.char_id == curr_char){
             equip_buttons[i].onclick = equip_item;
             equip_buttons[i].innerHTML = 'Equip';
         }
         else{
-            equip_buttons[i].onclick = transfer_item;
+            equip_buttons[i].onclick = null;
             equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
         }
     }
@@ -237,7 +233,7 @@ const get_char_inventory = async (ev) => {
     let elem = null;
     char_inventory.forEach(item => {
         const bucket = bungieEnum.bucket.dict[item.bucketHash];
-        let elem = document.querySelectorAll(`.${bucket}`)[1].querySelectorAll('div')[inv_index[bucket]];
+        let elem = document.querySelectorAll(`.${bucket} inv`).querySelectorAll('div')[inv_index[bucket]];
         inv_index[bucket]++;
         set_item_elem(item, elem);
     });

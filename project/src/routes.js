@@ -110,14 +110,14 @@ router.route("/equipitem/:item_id/:char_id/:mem_type")
         });
 });
 
-router.route("/transferitem/:item_hash/:item_id/:char_id/:mem_type")
+router.route("/vaultitem/:item_hash/:item_id/:char_id/:mem_type")
 .get((req, res) => {
-    console.log(`GET /transferitem/${req.params.item_hash}/${req.params.item_id}/${req.params.char_id}/${req.params.mem_type}`);
+    console.log(`GET /vaultitem/${req.params.item_hash}/${req.params.item_id}/${req.params.char_id}/${req.params.mem_type}`);
 
     const data = {
         "itemReferenceHash": req.params.item_hash,
         "stackSize": 1,
-        "transferToVault": false,
+        "transferToVault": true,
         "itemId": req.params.item_id,
         "characterId": req.params.char_id,
         "membershipType": req.params.mem_type
