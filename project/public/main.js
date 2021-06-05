@@ -6,19 +6,22 @@ const imageURL = 'https://bungie.net';
 const bungieEnum = {
     classType: ["Titan", "Hunter", "Warlock"],
     bucket: {
-        kinetic: 1498876634,
-        energy: 2465295065,
-        power: 953998645,
-        head: 3448274439,
-        arms: 3551918588,
-        chest: 14239492,
-        legs: 20886954,
-        classitem: 1585787867,
-        vault: 138197802
+        vault: 138197802,
+        dict: {
+            1498876634: 'kinetic',
+            2465295065: 'energy',
+            953998645: 'power',
+            3448274439: 'head',
+            3551918588: 'arms',
+            14239492: 'chest',
+            20886954: 'legs',
+            1585787867: 'classitem'
+        }
     }
 };
 
 const equip_menu = document.querySelector('.equip');
+let curr_item = null;
 
 let fetch_options = {};
 let user = {};
@@ -74,6 +77,7 @@ init();
 const start_move = ev => {
     equip_menu.replaceChild(ev.target.cloneNode(), equip_menu.querySelector('div'));
     equip_menu.style.display = 'block';
+    curr_item = ev.target;
 };
 
 const equip_item = async ev => {
@@ -81,7 +85,6 @@ const equip_item = async ev => {
     const char_id = ev.target.dataset.char_id;
     let res = await fetch(`${baseURL}/equipitem/${item_id}/${char_id}/${user.member_type}`, fetch_options);
     equip_menu.style.display = 'none';
-    show_char_items(ev);
 };
 
 const search_items = () => {
@@ -111,7 +114,7 @@ const reset_inventory = () => {
     })
 };
 
-const show_char_items = ev => {
+const show_char_items = async ev => {
     const equip_buttons = equip_menu.querySelectorAll('.equip_char');
     const char_buttons = document.querySelectorAll('.character');
 
@@ -127,8 +130,8 @@ const show_char_items = ev => {
     }
     reset_inventory();
     show_inventory();
-    get_char_inventory(ev);
     get_char_equipped(ev);
+    get_char_inventory(ev);
 };
 
 const show_vault_items = ev => {
@@ -140,6 +143,7 @@ const set_item_elem = async (item, elem) => {
     item_info = await item_info.json();
     elem.setAttribute('data-item_hash', item.itemHash);
     elem.setAttribute('data-instance_id', item.itemInstanceId);
+    elem.setAttribute('data-bucket', item.bucketHash);
     elem.setAttribute('data-item_name', item_info.name.toLowerCase());
     elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
     elem.onclick = start_move;
@@ -165,32 +169,7 @@ const get_char_equipped = async (ev) => {
     char_equipped = char_equipped.characterEquipment.data[ev.target.dataset.char_id].items;
 
     char_equipped.forEach(item => {
-        switch(item.bucketHash){
-            case bungieEnum.bucket.kinetic:
-                set_item_elem(item, document.querySelector('.kinetic div'));
-                break;
-            case bungieEnum.bucket.energy:
-                set_item_elem(item, document.querySelector('.energy div'));
-                break;
-            case bungieEnum.bucket.power:
-                set_item_elem(item, document.querySelector('.power div'));
-                break;
-            case bungieEnum.bucket.head:
-                set_item_elem(item, document.querySelector('.head div'));
-                break;
-            case bungieEnum.bucket.arms:
-                set_item_elem(item, document.querySelector('.arms div'));
-                break;
-            case bungieEnum.bucket.chest:
-                set_item_elem(item, document.querySelector('.chest div'));
-                break;
-            case bungieEnum.bucket.legs:
-                set_item_elem(item, document.querySelector('.legs div'));
-                break;
-            case bungieEnum.bucket.classitem:
-                set_item_elem(item, document.querySelector('.classitem div'));
-                break;
-    }
+        set_item_elem(item, document.querySelector(`.${bungieEnum.bucket.dict[item.bucketHash]} div`));
     });
 };
 
@@ -210,47 +189,9 @@ const get_char_inventory = async (ev) => {
     };
     let elem = null;
     char_inventory.forEach(item => {
-        switch(item.bucketHash){
-            case bungieEnum.bucket.kinetic:
-                elem = document.querySelectorAll('.kinetic')[1].querySelectorAll('div')[inv_index.kinetic];
-                inv_index.kinetic++;
-                set_item_elem(item, elem);
-                break;
-            case bungieEnum.bucket.energy:
-                elem = document.querySelectorAll('.energy')[1].querySelectorAll('div')[inv_index.energy];
-                inv_index.energy++;
-                set_item_elem(item, elem);
-                break;
-            case bungieEnum.bucket.power:
-                elem = document.querySelectorAll('.power')[1].querySelectorAll('div')[inv_index.power];
-                inv_index.power++;
-                set_item_elem(item, elem);
-                break;
-            case bungieEnum.bucket.head:
-                elem = document.querySelectorAll('.head')[1].querySelectorAll('div')[inv_index.head];
-                inv_index.head++;
-                set_item_elem(item, elem);
-                break;
-            case bungieEnum.bucket.arms:
-                elem = document.querySelectorAll('.arms')[1].querySelectorAll('div')[inv_index.arms];
-                inv_index.arms++;
-                set_item_elem(item, elem);
-                break;
-            case bungieEnum.bucket.chest:
-                elem = document.querySelectorAll('.chest')[1].querySelectorAll('div')[inv_index.chest];
-                inv_index.chest++;
-                set_item_elem(item, elem);
-                break;
-            case bungieEnum.bucket.legs:
-                elem = document.querySelectorAll('.legs')[1].querySelectorAll('div')[inv_index.legs];
-                inv_index.legs++;
-                set_item_elem(item, elem);
-                break;
-            case bungieEnum.bucket.classitem:
-                elem = document.querySelectorAll('.classitem')[1].querySelectorAll('div')[inv_index.classitem];
-                inv_index.classitem++;
-                set_item_elem(item, elem);
-                break;
-        }
+        const bucket = bungieEnum.bucket.dict[item.bucketHash];
+        let elem = document.querySelectorAll(`.${bucket}`)[1].querySelectorAll('div')[inv_index[bucket]];
+        inv_index[bucket]++;
+        set_item_elem(item, elem);
     });
 };
