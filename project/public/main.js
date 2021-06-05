@@ -69,7 +69,7 @@ const init = async () => {
         document.querySelector('.vault article').innerHTML = s;
         document.querySelector('.search button').onclick = search_items;
         document.querySelector('.equip_vault').onclick = vault_item;
-        document.getElementById('cancel').onclick = ev => { equip_menu.style.display = 'none'; };
+        document.querySelector('.cancel_equip').onclick = () => { equip_menu.style.display = 'none'; };
     }
     else{
         console.log('login failed');
