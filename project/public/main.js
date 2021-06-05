@@ -166,7 +166,8 @@ const transfer_item = async ev => {
     if(res.status == 200){
         clear_item(curr_item);
     }
-}
+    equip_menu.style.display = 'none';
+};
 
 const search_items = () => {
     const query = document.querySelector('.search input').value.toLowerCase();
