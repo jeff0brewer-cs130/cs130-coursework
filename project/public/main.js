@@ -22,7 +22,7 @@ const bungieEnum = {
 
 const equip_menu = document.querySelector('.equip');
 let curr_item = null;
-let curr_char = null;
+let curr_char = 'vault';
 let vault_ind = -1;
 
 let fetch_options = {};
@@ -108,7 +108,37 @@ const set_item_elem = async (item, elem) => {
         elem.setAttribute('data-bucket', bungieEnum.bucket.dict[item.bucketHash]);
         elem.setAttribute('data-item_name', item_info.name.toLowerCase());
         elem.style.backgroundImage = `url(${imageURL + item_info.icon})`;
-        elem.onclick = start_move;
+        elem.onclick = ev => {
+            set_move_mode('inventory')
+            start_move(ev);
+        }
+    }
+};
+
+const set_move_mode = mode => {
+    if(mode == 'inventory'){
+        const equip_buttons = equip_menu.querySelectorAll('.equip_char');
+        const char_buttons = document.querySelectorAll('.character');
+    
+        for(let i = 0; i < equip_buttons.length; i++){
+            if(equip_buttons[i].dataset.char_id == curr_char){
+                equip_buttons[i].onclick = equip_item;
+                equip_buttons[i].innerHTML = 'Equip';
+            }
+            else{
+                equip_buttons[i].onclick = transfer_item;
+                equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
+            }
+        }
+    }
+    if(mode == 'vault'){
+        const equip_buttons = equip_menu.querySelectorAll('.equip_char');
+        const char_buttons = document.querySelectorAll('.character');
+
+        for(let i = 0; i < equip_buttons.length; i++){
+            equip_buttons[i].onclick = unvault_item;
+            equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
+        }
     }
 };
 
@@ -179,7 +209,10 @@ const search_items = () => {
         results.appendChild(elem.cloneNode());
     });
     results.querySelectorAll('div').forEach(elem => {
-        elem.onclick = start_move;
+        elem.onclick = ev => {
+            set_move_mode('vault');
+            start_move(ev);
+        };
     });
 };
 
@@ -202,19 +235,6 @@ const reset_inventory = () => {
 
 const show_char_items = async ev => {
     curr_char = ev.target.dataset.char_id;
-    const equip_buttons = equip_menu.querySelectorAll('.equip_char');
-    const char_buttons = document.querySelectorAll('.character');
-
-    for(let i = 0; i < equip_buttons.length; i++){
-        if(equip_buttons[i].dataset.char_id == curr_char){
-            equip_buttons[i].onclick = equip_item;
-            equip_buttons[i].innerHTML = 'Equip';
-        }
-        else{
-            equip_buttons[i].onclick = transfer_item;
-            equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
-        }
-    }
     reset_inventory();
     show_inventory();
     get_char_equipped(ev);
@@ -223,13 +243,6 @@ const show_char_items = async ev => {
 
 const show_vault_items = ev => {
     curr_char = 'vault';
-    const equip_buttons = equip_menu.querySelectorAll('.equip_char');
-    const char_buttons = document.querySelectorAll('.character');
-
-    for(let i = 0; i < equip_buttons.length; i++){
-        equip_buttons[i].onclick = unvault_item;
-        equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
-    }
     show_vault();
 };
 
