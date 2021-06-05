@@ -115,6 +115,9 @@ const equip_item = async ev => {
         const equipped_item = document.querySelector(`.equipped .${curr_item.dataset.bucket} div`);
         swap_items(curr_item, equipped_item);
     }
+    else{
+        alert(res.data.Message);
+    }
 };
 
 const search_items = () => {
