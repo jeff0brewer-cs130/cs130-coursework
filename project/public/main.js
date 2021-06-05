@@ -178,6 +178,9 @@ const search_items = () => {
     elems.filter(elem => elem.dataset.item_name && elem.dataset.item_name.includes(query)).forEach(elem => {
         results.appendChild(elem.cloneNode());
     });
+    results.querySelectorAll('div').forEach(elem => {
+        elem.onclick = start_move;
+    });
 };
 
 const show_inventory = () => {
