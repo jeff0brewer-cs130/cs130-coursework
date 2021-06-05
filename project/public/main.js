@@ -204,7 +204,7 @@ const unsearch_item = async ev => {
     let res = await fetch(`${baseURL}/transfervault/false/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
     if(res.status == 200){
         if(curr_char == char_id){
-            let inv_items = document.getElementById('${curr_item.dataset.bucket}_inv').querySelectorAll('div');
+            let inv_items = document.getElementById(`${curr_item.dataset.bucket}_inv`).querySelectorAll('div');
             swap_items(curr_item, inv_items[inv_items.length - 1]);
         }
         clear_item(curr_item);
