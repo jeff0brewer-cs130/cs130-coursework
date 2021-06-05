@@ -132,9 +132,8 @@ const equip_item = async ev => {
 const vault_item = async ev => {
     const item_hash = curr_item.dataset.item_hash;
     const item_id = curr_item.dataset.instance_id;
-    const char_id = curr_char;
 
-    let res = await fetch(`${baseURL}/transfervault/true/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
+    let res = await fetch(`${baseURL}/transfervault/true/${item_hash}/${item_id}/${curr_char}/${user.member_type}`, fetch_options);
     if(res.status == 200){
         swap_items(curr_item, document.querySelectorAll('.vault article div')[vault_ind]);
         vault_ind++;
@@ -156,6 +155,18 @@ const unvault_item = async ev => {
     }
     equip_menu.style.display = 'none';
 };
+
+const transfer_item = async ev => {
+    const item_hash = curr_item.dataset.item_hash;
+    const item_id = curr_item.dataset.instance_id;
+    const char_id = ev.target.dataset.char_id;
+
+    let res = await fetch(`${baseURL}/transfervault/true/${item_hash}/${item_id}/${curr_char}/${user.member_type}`, fetch_options);
+    res = await fetch(`${baseURL}/transfervault/false/${item_hash}/${item_id}/${char_id}/${user.member_type}`, fetch_options);
+    if(res.status == 200){
+        clear_item(curr_item);
+    }
+}
 
 const search_items = () => {
     const query = document.querySelector('.search input').value.toLowerCase();
@@ -195,7 +206,7 @@ const show_char_items = async ev => {
             equip_buttons[i].innerHTML = 'Equip';
         }
         else{
-            equip_buttons[i].onclick = null;
+            equip_buttons[i].onclick = transfer_item;
             equip_buttons[i].innerHTML = char_buttons[i].innerHTML;
         }
     }
