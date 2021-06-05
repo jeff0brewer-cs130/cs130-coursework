@@ -67,7 +67,6 @@ const init = async () => {
             equip_elem[i].style.backgroundImage = emblem;
             equip_elem[i].innerHTML = char_class;
         }
-        document.querySelector('.search button').onclick = search_items;
         document.querySelector('.equip_vault').onclick = vault_item;
         document.querySelector('.cancel_equip').onclick = () => { equip_menu.style.display = 'none'; };
     }
