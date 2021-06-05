@@ -104,6 +104,7 @@ const set_item_elem = async (item, elem) => {
     if(item.bucketHash in bungieEnum.bucket.dict || item.bucketHash == bungieEnum.bucket.vault){
         let item_info = await fetch(`${baseURL}/itemlookup/${item.itemHash}`, fetch_options);
         item_info = await item_info.json();
+        console.log(item_info);
         elem.setAttribute('data-item_hash', item.itemHash);
         elem.setAttribute('data-instance_id', item.itemInstanceId);
         elem.setAttribute('data-bucket', bungieEnum.bucket.dict[item.bucketHash]);
