@@ -32,6 +32,11 @@ let curr_char = 'vault';
 let fetch_options = {};
 let user = {};
 
+const encodebase64 = str => {
+    let buff = Buffer.from(str);
+    return buff.toString('base64');
+};
+
 const init = async () => {
     let authorize = await fetch(`${bungieURL}/App/OAuth/Token/`, `grant_type=authorization_code&code=${auth_code}`,
     {
