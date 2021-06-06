@@ -74,6 +74,7 @@ const init = async () => {
         window.location.href = "./login.html";
     }
 };
+init();
 
 const clear_item = elem => {
     elem.dataset.item_hash = '';

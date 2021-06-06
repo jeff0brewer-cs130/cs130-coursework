@@ -1,6 +1,7 @@
 "use strict";
 
 require("dotenv").config();
+const cors = require("cors");
 const env = "" + process.env.NODE_ENV;
 
 const express = require("express");
@@ -15,6 +16,7 @@ app.use(express.json(bodyConfig));
 
 const middleware = require("./config/middleware");
 app.use(middleware.cors);
+app.use(cors);
 app.use(express.static('public'));
 
 const routes = require("./src/routes");
