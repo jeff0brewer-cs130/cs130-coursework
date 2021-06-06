@@ -28,7 +28,16 @@ let fetch_options = {};
 let user = {};
 
 const init = async () => {
-    let authorize = await fetch(`${baseURL}/authorize/${auth_code}`);
+    let authorize = await fetch(`${bungieURL}/App/OAuth/Token/`, `grant_type=authorization_code&code=${req.params.auth_code}`,
+    {
+        headers: {
+            "Authorization": `Basic ${encodebase64(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`)}`,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    });
+
+
+    // let authorize = await fetch(`${baseURL}/authorize/${auth_code}`);
     if(authorize.ok){
         authorize = await authorize.json();
         user.member_type = authorize.member_type;
