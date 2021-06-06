@@ -2,6 +2,7 @@ const url_search = new URLSearchParams(window.location.search);
 const auth_code = url_search.get('code');
 const baseURL = 'http://localhost:8081';
 const imageURL = 'https://bungie.net';
+const bungieURL = 'https://www.bungie.net/Platform';
 
 const bungieEnum = {
     classType: ["Titan", "Hunter", "Warlock"],
