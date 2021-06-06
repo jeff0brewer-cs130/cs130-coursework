@@ -4,6 +4,10 @@ const baseURL = 'http://localhost:8081';
 const imageURL = 'https://bungie.net';
 const bungieURL = 'https://www.bungie.net/Platform';
 
+const BUNGIE_API_KEY = 'c2ee6a0aef114e8dba0d57afe644528f';
+const CLIENT_ID = 36633;
+const CLIENT_SECRET = 'wtb8SXXP-uTQY3xLDhQw3vML-6hjxd881X3sCiRQGYE';
+
 const bungieEnum = {
     classType: ["Titan", "Hunter", "Warlock"],
     bucket: {
@@ -29,10 +33,10 @@ let fetch_options = {};
 let user = {};
 
 const init = async () => {
-    let authorize = await fetch(`${bungieURL}/App/OAuth/Token/`, `grant_type=authorization_code&code=${req.params.auth_code}`,
+    let authorize = await fetch(`${bungieURL}/App/OAuth/Token/`, `grant_type=authorization_code&code=${auth_code}`,
     {
         headers: {
-            "Authorization": `Basic ${encodebase64(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`)}`,
+            "Authorization": `Basic ${encodebase64(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
             "Content-Type": "application/x-www-form-urlencoded"
         }
     });
